@@ -6,6 +6,7 @@ import yfinance as yfin
 
 yfin.pdr_override()
 
+# Get input
 print(f'Hello! This program will show you the trends and correlation between stocks you provide it!\n')
 
 date_entry = input(f'Please enter a start date in YYYY-MM-DD format: ')
@@ -17,6 +18,7 @@ input_str = input(f"Enter a list of tickers separated by spaces: ")
 tickers = input_str.split()
 colnames = []
 
+# Format data
 for ticker in tickers:
     data = pdr.get_data_yahoo(ticker, start, end)
     if len(colnames) == 0:
@@ -26,16 +28,16 @@ for ticker in tickers:
     colnames.append(ticker)
     combined.columns = colnames
 
-# print(combined)
-
 plt.yscale("log")
 
+# Plot
 for ticker in tickers:
     plt.plot(combined[ticker], label=ticker)
 
 plt.legend(loc="upper right")
 plt.show()
 
+# Heatmap
 corr_data = combined.pct_change().corr(method="pearson")
 sns.heatmap(corr_data, annot=True, cmap="coolwarm")
 plt.show()
